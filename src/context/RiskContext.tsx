@@ -6,6 +6,8 @@ interface Risk {
   id: string
   nome: string
   codigo_ref: number
+  severidade?: string
+  probabilidade?: string
   perigo?: {
     nome: string
   }
