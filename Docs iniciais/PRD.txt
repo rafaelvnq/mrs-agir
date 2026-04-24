@@ -1,0 +1,80 @@
+PRD: AGIR (Análise e Gestão Integrada de Riscos) – Módulo Bowtie (Versão Final)
+1. Visão Geral e Objetivo
+Desenvolver o módulo de visualização Bowtie para o sistema AGIR da MRS Logística. O objetivo é permitir que gestores visualizem e editem a cadeia de causalidade e mitigação de riscos operacionais em uma interface reativa e integrada.
+
+2. Stack Tecnológica
+Banco de Dados: Supabase (PostgreSQL + Auth).
+
+Hospedagem/Deploy: Vercel.
+
+Versionamento: GitHub (Repositório privado).
+
+Frontend: Framework reativo (conforme padrão da IDE Antigravity) focado em manipulação de Canvas/SVG para o diagrama.
+
+3. Arquitetura de Navegação e Contexto
+Cabeçalho Global: A página do Bowtie deve possuir um cabeçalho fixo contendo um Dropdown de Seleção de Risco.
+
+Ao selecionar um risco no dropdown, o diagrama abaixo deve ser recarregado instantaneamente com os dados correspondentes.
+
+Início do Fluxo (Novo Risco):
+
+O usuário clica em "Novo Risco".
+
+Um pop-up solicita os dados do risco.
+
+Campo Obrigatório: Associação de um Perigo (Hazard). Este campo é um dropdown que consome dados pré-cadastrados pelo gestor no banco de dados.
+
+Após salvar, o Perigo é renderizado no topo e o Risco no centro.
+
+4. Layout e Regras de Posicionamento (Obrigatórias)
+O diagrama é composto por 5 colunas estritas. O posicionamento dos elementos é imutável:
+
+Coluna 1 (Causas): Extrema esquerda.
+
+Coluna 2 (Controles Preventivos): Posicionados obrigatoriamente entre a Causa e o Risco.
+
+Coluna 3 (Risco & Perigo): O Risco é o círculo central. O Perigo (Hazard) deve estar posicionado logo acima do Risco (conforme imagem de referência).
+
+Coluna 4 (Controles Mitigatórios): Posicionados obrigatoriamente entre o Risco e a Consequência.
+
+Coluna 5 (Consequências): Extrema direita.
+
+Conexões: Linhas dinâmicas devem conectar: Causa -> Controles Preventivos -> Risco -> Controles Mitigatórios -> Consequência.
+
+5. Funcionalidades de Edição (Pop-ups)
+Todos os elementos no canvas são clicáveis. Ao clicar, abre-se um modal para edição dos metadados salvos no Supabase:
+
+Risco (Centro): Código (auto), Nome, Perigo (FK), Dono, Origem, Classificação, Referências, Severidade e Probabilidade.
+
+Causa: Código (auto), Texto da Causa, Descrição Longa.
+
+Consequência: Código (auto), Texto da Consequência, Descrição Longa, Tema de Risco.
+
+Controles (Preventivos e Mitigatórios): Código (auto), Nome, Descrição, Categoria, Dono, Status, Frequência (Dias/Semanas/Meses/Anos), Data da Última Verificação (Manual) e Plano de Verificação.
+
+6. Dinâmica Interativa (Criação de Nós)
+A expansão do diagrama ocorre através de ícones [+] por proximidade (hover):
+
+No Risco: [+] à esquerda cria Causa; [+] à direita cria Consequência.
+
+Nas Causas: [+] à direita cria Controle Preventivo (Coluna 2).
+
+Nas Consequências: [+] à esquerda cria Controle Mitigatório (Coluna 4).
+
+7. Gestão de Dados (Dropdowns Dinâmicos)
+Nenhum campo de seleção deve ter valores fixos no código (hardcoded). O sistema deve prever tabelas auxiliares no Supabase para que o administrador cadastre:
+
+Lista de Perigos (Hazards).
+
+Lista de Categorias de Controle.
+
+Lista de Donos de Risco/Controle (Usuários).
+
+Lista de Temas de Risco, Origens e Classificações.
+
+8. Regras de Negócio Adicionais
+Persistência: Toda alteração nos modais ou criação de novos nós deve ser sincronizada imediatamente com o banco de dados Supabase.
+
+Exclusão: Ao excluir uma Causa ou Consequência, o sistema deve alertar que os controles associados também serão removidos (ou desvinculados).
+
+Responsividade: O diagrama deve permitir zoom e arraste (pan/zoom) caso o número de causas e consequências ultrapasse a área visível da tela.

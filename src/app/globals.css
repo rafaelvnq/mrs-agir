@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-mrs-blue: #1B3255;
+  --color-mrs-blue-hover: #00498E;
+  --color-mrs-yellow: #FFCC00;
+  --color-mrs-yellow-light: #FFED00;
+  --color-mrs-support-orange: #D66013;
+  --color-mrs-support-gray: #6C6D70;
+  --font-sans: var(--font-inter), 'Roboto', sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #1B3255;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
